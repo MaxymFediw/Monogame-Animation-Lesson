@@ -45,9 +45,9 @@ namespace Monogame_Animation_Lesson
             orangeTribbleRect = new Rectangle(300, 40, 100, 100);
 
             brownTribbleSpeed = new Vector2(2, 2);
-            creamTribbleSpeed = new Vector2(2, 2);
-            greyTribbleSpeed = new Vector2(2, 2);
-            orangeTribbleSpeed = new Vector2(2, 2);
+            creamTribbleSpeed = new Vector2(3, 0);
+            greyTribbleSpeed = new Vector2(0, 8);
+            orangeTribbleSpeed = new Vector2(12, 7);
 
             base.Initialize();
         }
@@ -153,6 +153,12 @@ namespace Monogame_Animation_Lesson
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(tribbleBrownTexture, brownTribbleRect, Color.White);
+
+            _spriteBatch.Draw(tribbleCreamTexture, creamTribbleRect, Color.White);
+
+            _spriteBatch.Draw(tribbleGreyTexture, greyTribbleRect, Color.White);
+
+            _spriteBatch.Draw(tribbleOrangeTexture, orangeTribbleRect, Color.White);
 
             _spriteBatch.End();
             
