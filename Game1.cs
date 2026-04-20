@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Monogame_Animation_Lesson
 {
@@ -10,7 +11,13 @@ namespace Monogame_Animation_Lesson
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        //Maxym F.
+
+        //             ---SLIGHT SEIZURE WARNING---
+
         Rectangle window;
+
+        Random generator1, generator2, generator3, generator4;
 
         Texture2D tribbleBrownTexture, tribbleCreamTexture, tribbleGreyTexture, tribbleOrangeTexture;
 
@@ -18,6 +25,8 @@ namespace Monogame_Animation_Lesson
         Vector2 brownTribbleSpeed, creamTribbleSpeed, greyTribbleSpeed, orangeTribbleSpeed;
 
         SoundEffect tribbleSound;
+
+        Color backColor;
 
         public Game1()
         {
@@ -32,17 +41,37 @@ namespace Monogame_Animation_Lesson
 
             window = new Rectangle(0, 0, 800, 600);
 
+            generator1 = new Random();
+
+            generator2 = new Random();
+
+            generator3 = new Random();
+
+            generator4 = new Random();
+
+
+            int start1, start2, start3, start4;
+
+            start1 = generator1.Next(1, 400);
+
+            start2 = generator2.Next(1, 400);
+
+            start3 = generator3.Next(1, 400);
+
+            start4 = generator4.Next(1, 400);
+
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
 
-            brownTribbleRect = new Rectangle(300, 10, 100, 100);
+                                     //      (X,  Y)
+            brownTribbleRect = new Rectangle(start1, start4, 100, 100); 
 
-            creamTribbleRect = new Rectangle(300, 20, 100, 100);
+            creamTribbleRect = new Rectangle(start2, start1, 100, 100);
 
-            greyTribbleRect = new Rectangle(300, 30, 100, 100);
+            greyTribbleRect = new Rectangle(start3, start2, 100, 100);
 
-            orangeTribbleRect = new Rectangle(300, 40, 100, 100);
+            orangeTribbleRect = new Rectangle(start4, start3, 100, 100);
 
             brownTribbleSpeed = new Vector2(2, 2);
             creamTribbleSpeed = new Vector2(3, 0);
@@ -76,12 +105,16 @@ namespace Monogame_Animation_Lesson
 
             // TODO: Add your update logic here
 
+            
+
             brownTribbleRect.X += (int)brownTribbleSpeed.X;
             if (brownTribbleRect.Right >= window.Width || brownTribbleRect.Left <= 0) 
             {
                 brownTribbleSpeed.X *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Pink;
             }
             brownTribbleRect.Y += (int)brownTribbleSpeed.Y;
             if (brownTribbleRect.Bottom >= window.Height || brownTribbleRect.Top <= 0) 
@@ -89,6 +122,8 @@ namespace Monogame_Animation_Lesson
                 brownTribbleSpeed.Y *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Pink;
             }
 
 
@@ -98,6 +133,8 @@ namespace Monogame_Animation_Lesson
                 creamTribbleSpeed.X *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Purple;
             }
             creamTribbleRect.Y += (int)creamTribbleSpeed.Y;
             if (creamTribbleRect.Bottom >= window.Height || creamTribbleRect.Top <= 0)
@@ -105,6 +142,8 @@ namespace Monogame_Animation_Lesson
                 creamTribbleSpeed.Y *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Purple;
             }
 
             
@@ -114,6 +153,8 @@ namespace Monogame_Animation_Lesson
                 greyTribbleSpeed.X *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Lime;
             }
             greyTribbleRect.Y += (int)greyTribbleSpeed.Y;
             if (greyTribbleRect.Bottom >= window.Height || greyTribbleRect.Top <= 0)
@@ -121,6 +162,8 @@ namespace Monogame_Animation_Lesson
                 greyTribbleSpeed.Y *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Lime;
             }
 
            
@@ -130,6 +173,8 @@ namespace Monogame_Animation_Lesson
                 orangeTribbleSpeed.X *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Red;
             }
             orangeTribbleRect.Y += (int)orangeTribbleSpeed.Y;
             if (orangeTribbleRect.Bottom >= window.Height || orangeTribbleRect.Top <= 0)
@@ -137,6 +182,8 @@ namespace Monogame_Animation_Lesson
                 orangeTribbleSpeed.Y *= -1;
 
                 tribbleSound.Play();
+
+                backColor = Color.Red;
             }
 
 
@@ -146,7 +193,7 @@ namespace Monogame_Animation_Lesson
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(backColor);
 
             // TODO: Add your drawing code here
 
