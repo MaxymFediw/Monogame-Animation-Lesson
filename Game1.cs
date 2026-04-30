@@ -6,10 +6,23 @@ using System;
 
 namespace Monogame_Animation_Lesson
 {
+    enum Screen 
+    {
+        Intro,
+        TribbleYard,
+        Outro
+    }
+
+
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        MouseState mouseState, prevMouseState;
+
+        Screen screen;
 
         //Maxym F.
 
@@ -19,14 +32,20 @@ namespace Monogame_Animation_Lesson
 
         Random generator1, generator2, generator3, generator4;
 
-        Texture2D tribbleBrownTexture, tribbleCreamTexture, tribbleGreyTexture, tribbleOrangeTexture;
+        Texture2D tribbleBrownTexture, tribbleCreamTexture, tribbleGreyTexture, tribbleOrangeTexture, introTexture, outroTexture;
 
-        Rectangle brownTribbleRect, creamTribbleRect, greyTribbleRect, orangeTribbleRect;
+        Rectangle brownTribbleRect, creamTribbleRect, greyTribbleRect, orangeTribbleRect, tribbleIntroRect;
         Vector2 brownTribbleSpeed, creamTribbleSpeed, greyTribbleSpeed, orangeTribbleSpeed;
 
         SoundEffect tribbleSound;
 
         Color backColor;
+
+        SpriteFont textFont;
+
+        SoundEffect outroSong;
+
+        SoundEffectInstance outroInstance;
 
         public Game1()
         {
@@ -78,6 +97,8 @@ namespace Monogame_Animation_Lesson
             greyTribbleSpeed = new Vector2(0, 8);
             orangeTribbleSpeed = new Vector2(12, 7);
 
+            screen = Screen.Intro;
+
             base.Initialize();
         }
 
@@ -95,100 +116,129 @@ namespace Monogame_Animation_Lesson
 
             tribbleSound = Content.Load<SoundEffect>("tribble_coo");
 
+            introTexture = Content.Load<Texture2D>("tribble_intro");
+
+            outroTexture = Content.Load<Texture2D>("end");
+
+            textFont = Content.Load<SpriteFont>("textFont");
+
+            outroSong = Content.Load<SoundEffect>("outro");
+            outroInstance = outroSong.CreateInstance();
+
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
+            prevMouseState = mouseState;
+            mouseState = Mouse.GetState();
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
 
-            
 
-            brownTribbleRect.X += (int)brownTribbleSpeed.X;
-            if (brownTribbleRect.Right >= window.Width || brownTribbleRect.Left <= 0) 
+            if (screen == Screen.Intro)
             {
-                brownTribbleSpeed.X *= -1;
 
-                tribbleSound.Play();
+                if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
+                {
+                    screen = Screen.TribbleYard;
+                }
 
-                backColor = Color.Pink;
-            }
-            brownTribbleRect.Y += (int)brownTribbleSpeed.Y;
-            if (brownTribbleRect.Bottom >= window.Height || brownTribbleRect.Top <= 0) 
-            {
-                brownTribbleSpeed.Y *= -1;
-
-                tribbleSound.Play();
-
-                backColor = Color.Pink;
             }
 
-
-            creamTribbleRect.X += (int)creamTribbleSpeed.X;
-            if (creamTribbleRect.Right >= window.Width || creamTribbleRect.Left <= 0)
+            else if (screen == Screen.TribbleYard)
             {
-                creamTribbleSpeed.X *= -1;
+                if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
+                {
+                    screen = Screen.Outro;
+                }
+                
+                brownTribbleRect.X += (int)brownTribbleSpeed.X;
+                if (brownTribbleRect.Right >= window.Width || brownTribbleRect.Left <= 0)
+                {
+                    brownTribbleSpeed.X *= -1;
 
-                tribbleSound.Play();
+                    tribbleSound.Play();
 
-                backColor = Color.Purple;
+                    backColor = Color.Pink;
+                }
+                brownTribbleRect.Y += (int)brownTribbleSpeed.Y;
+                if (brownTribbleRect.Bottom >= window.Height || brownTribbleRect.Top <= 0)
+                {
+                    brownTribbleSpeed.Y *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Pink;
+                }
+
+
+                creamTribbleRect.X += (int)creamTribbleSpeed.X;
+                if (creamTribbleRect.Right >= window.Width || creamTribbleRect.Left <= 0)
+                {
+                    creamTribbleSpeed.X *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Purple;
+                }
+                creamTribbleRect.Y += (int)creamTribbleSpeed.Y;
+                if (creamTribbleRect.Bottom >= window.Height || creamTribbleRect.Top <= 0)
+                {
+                    creamTribbleSpeed.Y *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Purple;
+                }
+
+
+                greyTribbleRect.X += (int)greyTribbleSpeed.X;
+                if (greyTribbleRect.Right >= window.Width || greyTribbleRect.Left <= 0)
+                {
+                    greyTribbleSpeed.X *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Lime;
+                }
+                greyTribbleRect.Y += (int)greyTribbleSpeed.Y;
+                if (greyTribbleRect.Bottom >= window.Height || greyTribbleRect.Top <= 0)
+                {
+                    greyTribbleSpeed.Y *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Lime;
+                }
+
+
+                orangeTribbleRect.X += (int)orangeTribbleSpeed.X;
+                if (orangeTribbleRect.Right >= window.Width || orangeTribbleRect.Left <= 0)
+                {
+                    orangeTribbleSpeed.X *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Red;
+                }
+                orangeTribbleRect.Y += (int)orangeTribbleSpeed.Y;
+                if (orangeTribbleRect.Bottom >= window.Height || orangeTribbleRect.Top <= 0)
+                {
+                    orangeTribbleSpeed.Y *= -1;
+
+                    tribbleSound.Play();
+
+                    backColor = Color.Red;
+                }
+
+
+
+                base.Update(gameTime);
             }
-            creamTribbleRect.Y += (int)creamTribbleSpeed.Y;
-            if (creamTribbleRect.Bottom >= window.Height || creamTribbleRect.Top <= 0)
-            {
-                creamTribbleSpeed.Y *= -1;
-
-                tribbleSound.Play();
-
-                backColor = Color.Purple;
-            }
-
-            
-            greyTribbleRect.X += (int)greyTribbleSpeed.X;
-            if (greyTribbleRect.Right >= window.Width || greyTribbleRect.Left <= 0)
-            {
-                greyTribbleSpeed.X *= -1;
-
-                tribbleSound.Play();
-
-                backColor = Color.Lime;
-            }
-            greyTribbleRect.Y += (int)greyTribbleSpeed.Y;
-            if (greyTribbleRect.Bottom >= window.Height || greyTribbleRect.Top <= 0)
-            {
-                greyTribbleSpeed.Y *= -1;
-
-                tribbleSound.Play();
-
-                backColor = Color.Lime;
-            }
-
-           
-            orangeTribbleRect.X += (int)orangeTribbleSpeed.X;
-            if (orangeTribbleRect.Right >= window.Width || orangeTribbleRect.Left <= 0)
-            {
-                orangeTribbleSpeed.X *= -1;
-
-                tribbleSound.Play();
-
-                backColor = Color.Red;
-            }
-            orangeTribbleRect.Y += (int)orangeTribbleSpeed.Y;
-            if (orangeTribbleRect.Bottom >= window.Height || orangeTribbleRect.Top <= 0)
-            {
-                orangeTribbleSpeed.Y *= -1;
-
-                tribbleSound.Play();
-
-                backColor = Color.Red;
-            }
-
-
-
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -199,16 +249,40 @@ namespace Monogame_Animation_Lesson
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(tribbleBrownTexture, brownTribbleRect, Color.White);
+           
 
-            _spriteBatch.Draw(tribbleCreamTexture, creamTribbleRect, Color.White);
+            if (screen == Screen.Intro)
+            {
+                _spriteBatch.Draw(introTexture, window, Color.White);
 
-            _spriteBatch.Draw(tribbleGreyTexture, greyTribbleRect, Color.White);
+                _spriteBatch.DrawString(textFont, ("Hit left click to Continue."), new Vector2(220, 50), Color.White);
+            }
 
-            _spriteBatch.Draw(tribbleOrangeTexture, orangeTribbleRect, Color.White);
+            if (screen == Screen.Outro) 
+            {
+                _spriteBatch.Draw(outroTexture, window, Color.White);
 
-            _spriteBatch.End();
+                outroInstance.Play();
+            }
+
+
+            else if (screen == Screen.TribbleYard)
+            {
+
+                _spriteBatch.Draw(tribbleBrownTexture, brownTribbleRect, Color.White);
+
+                _spriteBatch.Draw(tribbleCreamTexture, creamTribbleRect, Color.White);
+
+                _spriteBatch.Draw(tribbleGreyTexture, greyTribbleRect, Color.White);
+
+                _spriteBatch.Draw(tribbleOrangeTexture, orangeTribbleRect, Color.White);
+
+                _spriteBatch.DrawString(textFont, ("Hit left click to Continue."), new Vector2(220, 50), Color.White);
+
+            }
             
+            _spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
